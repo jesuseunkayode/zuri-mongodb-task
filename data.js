@@ -1,2 +1,0 @@
-const todos = [];
-module.exports = todos;[{"id":2,"title":"Traveling","description":"Visit a UK","timestamp":"11-06-2022"}][{"id":3,"title":"Traveling","description":"Visit a UK","timestamp":"11-06-2022"}]
