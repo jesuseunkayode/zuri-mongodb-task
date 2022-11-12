@@ -60,11 +60,8 @@ app.put('/todos/:id', (request, response) => {
                 
         //     })
         // } 
-
-        
         const db = connectedClient.db();
-        db.collection('todos').update({
-        
+        db.collection('todos').findOneAndUpdate({
 
         }, (err, result) => {
             if(err) return response.status(500).json({message: err});
@@ -76,6 +73,25 @@ app.put('/todos/:id', (request, response) => {
 
 
 //Delete a single todo
+
+app.delete('/todos/:id', (request, response) => {
+    client.connect((err, connectedClient) => {
+       if(err) return response.status(500).json({message: err});
+       const db = connectedClient.db();
+       db.collection('todos').deleteOne({
+        title: request.body.title,
+        description: request.body.description,
+        timestamp: request.body.timestamp
+          
+        }, (err, result) => {
+           if(err) return response.status(500).json({message: err});
+         response.status(200).json({message: `Deleted todo id ${request.params.id}`});
+       })
+    })
+   
+});
+
+
 
 
 
