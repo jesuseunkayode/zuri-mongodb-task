@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
+
 const MongoClient = require('mongodb').MongoClient;
 const connectionString = 'mongodb://localhost:27017/todoapp';
 const client = new MongoClient((connectionString), {
     useNewurlParser: true,
     useUnifiedTopology: true
 });
-
 
 
 //Get all todos
@@ -22,15 +22,15 @@ router.get('/todos', (request, response) => {
      
  })
  
- //Add a single todo to todos
+ //Add a single todo to todos array of object
  router.post('/todos', (request, response) => {
       client.connect((err, connectedClient) => {
-         if(err) return response.status(500).json({message: err});
+         if(err) response.status(500).json({message: err});
          const db = connectedClient.db();
          db.collection('todos').insertOne({
-             title: request.body.title,
-             description: request.body.description,
-             timestamp: request.body.timestamp
+             title: request.body,
+             description: request.body,
+             timestamp: request.body
          }, (err, result) => {
              if(err) return response.status(500).json({message: err});
              return response.status(200).json({message: "New todo task has been added"});
@@ -41,31 +41,31 @@ router.get('/todos', (request, response) => {
  
  
  //Update a single todo
- router.put('/todos/:id', (request, response) => {
-     client.connect((err, connectedClient) => {
-         if(err) return response.status(500).json({message: err});
+//  router.put('/todos/:title', (request, response) => {
+//      client.connect((err, connectedClient) => {
+//          if(err) return response.status(500).json({message: err});
          
-         // const found = todos.some(todo => todo.id === parseInt(request.params.id))
-         // if(found){
-         //     const updatedTodo = request.body;
-         //     todos.forEach(todo => {
-         //         if(todo.id === parseInt(request.params.id)){
-         //             todo.title = updatedTodo.title
-         //             todo.description = updatedTodo.description
-         //             todo.timestamp = updatedTodo
-         //         }
+//          // const found = todos.some(todo => todo.id === parseInt(request.params.id))
+//          // if(found){
+//          //     const updatedTodo = request.body;
+//          //     todos.forEach(todo => {
+//          //         if(todo.id === parseInt(request.params.id)){
+//          //             todo.title = updatedTodo.title
+//          //             todo.description = updatedTodo.description
+//          //             todo.timestamp = updatedTodo
+//          //         }
                  
-         //     })
-         // } 
-         const db = connectedClient.db();
-         db.collection('todos').findOneAndUpdate({
- 
-         }, (err, result) => {
-             if(err) return response.status(500).json({message: err});
-             return response.status(200).json({message:`You have updated your todo with id ${request.params.id}`});
-         })
-     })
- })
+//          //     })
+//          // } 
+//          const db = connectedClient.db();
+//          db.collection('todos').findOneAndUpdate({
+//                   title : request.query.title
+//          }, (err, result) => {
+//              if(err) return response.status(500).json({message: err});
+//              return response.status(200).json({message:`You have updated your todo with id ${request.params.id}`});
+//          })
+//      })
+//  })
  
  
  
